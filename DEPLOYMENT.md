@@ -44,7 +44,7 @@ In the Vercel project: **Settings → Environment Variables**. Add these for **P
 
 | Name | Value | Notes |
 |------|--------|--------|
-| `NEXT_PUBLIC_SITE_URL` | `https://your-app.vercel.app` | Replace with your Vercel URL after first deploy |
+| `NEXT_PUBLIC_SITE_URL` | `https://your-app.vercel.app` | Optional for first deploy (build uses a placeholder); set to your real Vercel URL and redeploy for auth redirects |
 | `NEXT_PUBLIC_PRODUCT_NAME` | `Bhakti Oils` | |
 | `NEXT_PUBLIC_SITE_TITLE` | `Bhakti Oils - Order Management` | |
 | `NEXT_PUBLIC_SITE_DESCRIPTION` | `Bhakti Oils order management portal...` | |
@@ -66,7 +66,7 @@ In the Vercel project: **Settings → Environment Variables**. Add these for **P
 - `NEXT_PUBLIC_LANGUAGE_PRIORITY` – `application`
 - `NEXT_PUBLIC_ENABLE_PERSONAL_ACCOUNT_DELETION` – `true`
 
-After the first deploy, set `NEXT_PUBLIC_SITE_URL` to your real Vercel URL (e.g. `https://bhakti-oils.vercel.app`) and redeploy so auth redirects work.
+If you did not set `NEXT_PUBLIC_SITE_URL` before the first deploy, set it now to your real Vercel URL (e.g. `https://bhakti-oils.vercel.app`) and redeploy so auth redirects work.
 
 ---
 

@@ -63,11 +63,16 @@ const AppConfigSchema = z
     },
   );
 
+// Build-time fallback so first Vercel deploy succeeds when NEXT_PUBLIC_SITE_URL is not set yet
+const siteUrl =
+  (process.env.NEXT_PUBLIC_SITE_URL || '').trim() ||
+  'https://placeholder.vercel.app';
+
 const appConfig = AppConfigSchema.parse({
   name: process.env.NEXT_PUBLIC_PRODUCT_NAME,
   title: process.env.NEXT_PUBLIC_SITE_TITLE,
   description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION,
-  url: process.env.NEXT_PUBLIC_SITE_URL,
+  url: siteUrl,
   locale: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,
   theme: process.env.NEXT_PUBLIC_DEFAULT_THEME_MODE,
   themeColor: process.env.NEXT_PUBLIC_THEME_COLOR,
