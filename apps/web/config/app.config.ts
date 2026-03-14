@@ -74,11 +74,16 @@ const siteUrl =
       ? `https://${vercelUrl}`
       : raw || undefined;
 
+// Schema requires url to be a non-empty string. In development, allow missing env by using localhost.
+// In production without Vercel URL, leave undefined so parse fails with a clear required_error.
+const urlForSchema =
+  siteUrl ?? (!production ? 'http://localhost:3000' : undefined);
+
 const appConfig = AppConfigSchema.parse({
   name: process.env.NEXT_PUBLIC_PRODUCT_NAME,
   title: process.env.NEXT_PUBLIC_SITE_TITLE,
   description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION,
-  url: siteUrl,
+  url: urlForSchema,
   locale: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,
   theme: process.env.NEXT_PUBLIC_DEFAULT_THEME_MODE,
   themeColor: process.env.NEXT_PUBLIC_THEME_COLOR,

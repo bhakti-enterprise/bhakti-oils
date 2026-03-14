@@ -55,12 +55,20 @@ In the Vercel project: **Settings → Environment Variables**. Add these for **P
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon key | Same place |
 | `SUPABASE_SERVICE_ROLE_KEY` | Your Supabase service role key | **Keep secret**; server-only |
 
-### Optional (match your `.env` if you use them)
+### Optional but required for sign-in page to match localhost
 
-- `NEXT_PUBLIC_AUTH_PASSWORD` – `true`
-- `NEXT_PUBLIC_AUTH_MAGIC_LINK` – `false`
+If the sign-in page on Vercel looks different from localhost (e.g. missing password form, different layout), set these so they match your local `.env`:
+
+| Name | Typical value | Effect if missing |
+|------|----------------|-------------------|
+| `NEXT_PUBLIC_AUTH_PASSWORD` | `true` | Password sign-in form is hidden; page looks different. |
+| `NEXT_PUBLIC_AUTH_MAGIC_LINK` | `false` | Magic-link section may show when you don’t want it. |
+| `NEXT_PUBLIC_DEFAULT_LOCALE` | `en` | Locale/translations can differ. |
+| `NEXT_PUBLIC_LOCALES_PATH` | `public/locales` | With Root Directory `apps/web`, use `public/locales`. |
+
+Other optional (match your `.env` if you use them):
+
 - `NEXT_PUBLIC_CAPTCHA_SITE_KEY` – if you use Captcha
-- `NEXT_PUBLIC_LOCALES_PATH` – `public/locales` (with Root Directory `apps/web`, paths are relative to that)
 - `NEXT_PUBLIC_ENABLE_SIDEBAR_TRIGGER` – `false`
 - `NEXT_PUBLIC_ENABLE_THEME_TOGGLE` – `true`
 - `NEXT_PUBLIC_LANGUAGE_PRIORITY` – `application`
@@ -106,3 +114,9 @@ On Vercel, the first deploy uses the deployment URL automatically for metadata a
 
 - **Realtime or DB errors**  
   Confirm `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` match your Supabase project and that migrations have been applied.
+
+- **Sign-in page looks different on Vercel than localhost**  
+  1. In Vercel **Settings → Environment Variables**, set `NEXT_PUBLIC_AUTH_PASSWORD` = `true` (and `NEXT_PUBLIC_AUTH_MAGIC_LINK` = `false` if you only use password). Without these, the sign-in form can show a different set of options.  
+  2. Set `NEXT_PUBLIC_DEFAULT_LOCALE` = `en` (or your locale) so translations match.  
+  3. **Redeploy** after changing env vars (Production → Deployments → ⋮ → Redeploy).  
+  4. The app now forces the sign-in page to be dynamic, so after a redeploy you should see the same UI as localhost.
