@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm exec next build",
+  "buildCommand": "pnpm run build:vercel",
   "installCommand": "pnpm install",
   "framework": "nextjs",
   "regions": ["iad1"]
