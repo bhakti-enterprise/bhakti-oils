@@ -8,6 +8,7 @@ import { Button } from '@kit/ui/button';
 import { Heading } from '@kit/ui/heading';
 import { Trans } from '@kit/ui/trans';
 
+import pathsConfig from '~/config/paths.config';
 import { SiteHeader } from '~/(marketing)/_components/site-header';
 
 const ErrorPage = ({
@@ -18,6 +19,10 @@ const ErrorPage = ({
   reset: () => void;
 }) => {
   console.error(error);
+
+  const errorMessage =
+    typeof error?.message === 'string' ? error.message : null;
+  const errorDigest = typeof error?.digest === 'string' ? error.digest : null;
 
   return (
     <div className={'flex h-screen flex-1 flex-col'}>
@@ -31,7 +36,7 @@ const ErrorPage = ({
         <div className={'flex flex-col items-center space-y-8'}>
           <div>
             <h1 className={'font-heading text-9xl font-semibold'}>
-              <Trans i18nKey={'common:errorPageHeading'} />
+              <Trans i18nKey={'common:errorPageHeading'} fallback="Ouch! :|" />
             </h1>
           </div>
 
@@ -43,27 +48,47 @@ const ErrorPage = ({
             >
               <div>
                 <Heading level={2}>
-                  <Trans i18nKey={'common:genericError'} />
+                  <Trans
+                    i18nKey={'common:genericError'}
+                    fallback="Sorry, something went wrong."
+                  />
                 </Heading>
               </div>
 
               <p className={'text-muted-foreground text-lg'}>
-                <Trans i18nKey={'common:genericErrorSubHeading'} />
+                <Trans
+                  i18nKey={'common:genericErrorSubHeading'}
+                  fallback="An error occurred. Check the browser console or Vercel logs for details."
+                />
               </p>
+
+              {(errorMessage || errorDigest) && (
+                <p
+                  className={
+                    'text-muted-foreground mt-4 rounded border border-dashed border-muted-foreground/30 bg-muted/30 px-3 py-2 font-mono text-sm'
+                  }
+                  title="Error details"
+                >
+                  {errorMessage ?? null}
+                  {errorDigest && (
+                    <span className={'block mt-1 text-xs'}>
+                      Digest: {errorDigest}
+                    </span>
+                  )}
+                </p>
+              )}
             </div>
 
             <div className={'flex space-x-4'}>
               <Button className={'w-full'} variant={'default'} onClick={reset}>
                 <ArrowLeft className={'mr-2 h-4'} />
-
-                <Trans i18nKey={'common:goBack'} />
+                <Trans i18nKey={'common:goBack'} fallback="Go back" />
               </Button>
 
               <Button className={'w-full'} variant={'outline'} asChild>
-                <Link href={'/contact'}>
+                <Link href={pathsConfig.auth.signIn}>
                   <MessageCircle className={'mr-2 h-4'} />
-
-                  <Trans i18nKey={'common:contactUs'} />
+                  <Trans i18nKey={'common:contactUs'} fallback="Sign in" />
                 </Link>
               </Button>
             </div>

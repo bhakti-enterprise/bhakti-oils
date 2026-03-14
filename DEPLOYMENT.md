@@ -106,6 +106,14 @@ On Vercel, the first deploy uses the deployment URL automatically for metadata a
 
 ## Troubleshooting
 
+- **Blank or nearly empty page (header + buttons only, works locally)**  
+  Usually the app hits the **error boundary** because a server component threw. Most common cause: **missing or wrong env vars on Vercel**.  
+  1. Vercel **Settings → Environment Variables**: set for Production at least `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.  
+  2. Set `NEXT_PUBLIC_SITE_URL` to your live URL (e.g. `https://bhakti-oils.vercel.app`).  
+  3. With Root Directory `apps/web`, set `NEXT_PUBLIC_LOCALES_PATH` to **`public/locales`**.  
+  4. **Redeploy** after changing env vars.  
+  If still blank, check **Deployments → [deployment] → Functions / Runtime Logs** for the error.
+
 - **Build fails with “module not found”**  
   Ensure **Root Directory** is `apps/web` and **Install Command** is `pnpm install` so the monorepo and workspace deps are installed.
 
