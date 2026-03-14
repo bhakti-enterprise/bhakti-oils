@@ -112,7 +112,7 @@ export async function getOrders(
   const orders = rows.map((row: Record<string, unknown>) => {
     const createdBy = row.created_by as string;
     const stored = (row.created_by_name as string) ?? '';
-    const creatorName = creatorNameById[createdBy] ?? friendlyNameFromStored(stored) || null;
+    const creatorName = creatorNameById[createdBy] ?? (friendlyNameFromStored(stored) || null);
     return {
       id: row.id as string,
       display_id: row.display_id as string | null,
