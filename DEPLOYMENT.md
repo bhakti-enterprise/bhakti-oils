@@ -30,7 +30,7 @@ git push -u origin main
 3. **Configure the project:**
    - **Root Directory:** Click “Edit” and set to **`apps/web`** (so Vercel builds the Next.js app).
    - **Framework Preset:** Next.js (auto-detected).
-   - **Build Command:** `next build` (uses `vercel.json`; no `.env.local` needed).
+   - **Build Command:** `pnpm exec next build` (set in `apps/web/vercel.json` so the monorepo’s `next` binary is found; do not use plain `next build`).
    - **Output Directory:** leave default.
    - **Install Command:** `pnpm install`.
 
