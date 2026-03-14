@@ -63,10 +63,16 @@ const AppConfigSchema = z
     },
   );
 
-// Build-time fallback so first Vercel deploy succeeds when NEXT_PUBLIC_SITE_URL is not set yet
+// Use explicit HTTPS URL when set; on Vercel only, fall back to deployment URL so metadata/sitemap/robots
+// never point to a placeholder or wrong domain. Non-Vercel builds must set NEXT_PUBLIC_SITE_URL.
+const raw = (process.env.NEXT_PUBLIC_SITE_URL || '').trim();
+const vercelUrl = process.env.VERCEL_URL?.trim(); // Set by Vercel at build time (e.g. "project.vercel.app")
 const siteUrl =
-  (process.env.NEXT_PUBLIC_SITE_URL || '').trim() ||
-  'https://placeholder.vercel.app';
+  raw && raw.startsWith('https://')
+    ? raw
+    : production && vercelUrl
+      ? `https://${vercelUrl}`
+      : raw || undefined;
 
 const appConfig = AppConfigSchema.parse({
   name: process.env.NEXT_PUBLIC_PRODUCT_NAME,

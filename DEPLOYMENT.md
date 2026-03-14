@@ -44,7 +44,7 @@ In the Vercel project: **Settings → Environment Variables**. Add these for **P
 
 | Name | Value | Notes |
 |------|--------|--------|
-| `NEXT_PUBLIC_SITE_URL` | `https://your-app.vercel.app` | Optional for first deploy (build uses a placeholder); set to your real Vercel URL and redeploy for auth redirects |
+| `NEXT_PUBLIC_SITE_URL` | `https://bhakti-oils.vercel.app` | Optional on Vercel (build uses deployment URL); **required** for custom domain and auth redirects. On other hosts, set this or the build fails. |
 | `NEXT_PUBLIC_PRODUCT_NAME` | `Bhakti Oils` | |
 | `NEXT_PUBLIC_SITE_TITLE` | `Bhakti Oils - Order Management` | |
 | `NEXT_PUBLIC_SITE_DESCRIPTION` | `Bhakti Oils order management portal...` | |
@@ -66,7 +66,7 @@ In the Vercel project: **Settings → Environment Variables**. Add these for **P
 - `NEXT_PUBLIC_LANGUAGE_PRIORITY` – `application`
 - `NEXT_PUBLIC_ENABLE_PERSONAL_ACCOUNT_DELETION` – `true`
 
-If you did not set `NEXT_PUBLIC_SITE_URL` before the first deploy, set it now to your real Vercel URL (e.g. `https://bhakti-oils.vercel.app`) and redeploy so auth redirects work.
+On Vercel, the first deploy uses the deployment URL automatically for metadata and sitemap. Set `NEXT_PUBLIC_SITE_URL` to your real URL (e.g. `https://bhakti-oils.vercel.app`) for auth redirects and when using a custom domain.
 
 ---
 
@@ -74,14 +74,14 @@ If you did not set `NEXT_PUBLIC_SITE_URL` before the first deploy, set it now to
 
 1. Click **Deploy**.
 2. Wait for the build. The first run may take a few minutes (pnpm install + Next.js build).
-3. Open the generated URL (e.g. `https://your-project.vercel.app`).
+3. Open the generated URL (e.g. `https://bhakti-oils.vercel.app`).
 
 ---
 
 ## 5. Post-deploy checklist
 
-- [ ] Update `NEXT_PUBLIC_SITE_URL` in Vercel to the final URL and redeploy.
-- [ ] In **Supabase Dashboard → Authentication → URL Configuration**, add your Vercel URL to **Site URL** and **Redirect URLs** (e.g. `https://your-app.vercel.app/**`).
+- [ ] If using a custom domain or Supabase auth: set `NEXT_PUBLIC_SITE_URL` in Vercel to the final URL and redeploy.
+- [ ] In **Supabase Dashboard → Authentication → URL Configuration**, add your Vercel URL to **Site URL** and **Redirect URLs** (e.g. `https://bhakti-oils.vercel.app/**`).
 - [ ] Ensure Supabase migrations are applied (you can run `supabase db push` from your machine against the hosted project, or use Supabase Dashboard / CI).
 - [ ] Test sign-in, sign-out, and order flows on the deployed app.
 
