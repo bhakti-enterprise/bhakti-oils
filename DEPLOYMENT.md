@@ -44,7 +44,7 @@ In the Vercel project: **Settings → Environment Variables**. Add these for **P
 
 | Name | Value | Notes |
 |------|--------|--------|
-| `NEXT_PUBLIC_SITE_URL` | `https://bhakti-oils.vercel.app` | Optional on Vercel (build uses deployment URL); **required** for custom domain and auth redirects. On other hosts, set this or the build fails. |
+| `NEXT_PUBLIC_SITE_URL` | `https://bhakti-oils.vercel.app` | **Must be https** in production (not `http://localhost:3000`), or leave unset so the app uses Vercel’s URL. Required for custom domain and auth redirects. |
 | `NEXT_PUBLIC_PRODUCT_NAME` | `Bhakti Oils` | |
 | `NEXT_PUBLIC_SITE_TITLE` | `Bhakti Oils - Order Management` | |
 | `NEXT_PUBLIC_SITE_DESCRIPTION` | `Bhakti Oils order management portal...` | |
