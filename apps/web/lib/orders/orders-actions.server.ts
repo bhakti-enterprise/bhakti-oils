@@ -203,6 +203,41 @@ export async function cancelOrder(orderId: string, reason?: string | null): Prom
   return {};
 }
 
+export async function addOrderFeedback(
+  orderId: string,
+  rating: number,
+  feedbackText: string | null,
+): Promise<{ error?: string }> {
+  const supabase = getSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: 'Unauthorized' };
+
+  const { data: order } = await supabase
+    .from('orders')
+    .select('status')
+    .eq('id', orderId)
+    .single();
+  if (!order) return { error: 'Order not found' };
+
+  const changedByName = await getDisplayName(supabase, user);
+  const stars = '⭐'.repeat(Math.min(5, Math.max(1, rating)));
+  const note = feedbackText?.trim()
+    ? `Feedback ${stars}: ${feedbackText.trim()}`
+    : `Feedback ${stars}`;
+
+  await supabase.from('order_timeline').insert({
+    order_id: orderId,
+    from_status: order.status,
+    to_status: order.status,
+    changed_by_user_id: user.id,
+    changed_by_name: changedByName,
+    note,
+  });
+
+  revalidatePath(`${pathsConfig.app.orders}/${orderId}`);
+  return {};
+}
+
 export async function deleteOrder(orderId: string): Promise<{ error?: string }> {
   const supabase = getSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();

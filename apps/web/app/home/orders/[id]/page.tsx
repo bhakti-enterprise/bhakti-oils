@@ -9,6 +9,13 @@ import { OrderDetailClient } from '~/home/orders/[id]/_components/order-detail-c
 import { OrderActions } from '~/home/orders/[id]/_components/order-actions';
 import { getOrderById } from '~/lib/orders/orders.server';
 import { format } from 'date-fns';
+
+/** Convert UTC date string to IST (UTC+5:30) before formatting */
+function formatIST(dateStr: string): string {
+  const utc = new Date(dateStr);
+  const ist = new Date(utc.getTime() + (5 * 60 + 30) * 60 * 1000);
+  return format(ist, 'dd MMM yyyy, hh:mm a') + ' IST';
+}
 import { StatusBadge } from '~/components/orders/status-badge';
 import { formatIndianMobile } from '~/lib/phone';
 
@@ -41,7 +48,7 @@ export default async function OrderDetailPage({
               <StatusBadge status={order.status} />
             </div>
             <span className="text-muted-foreground mt-1 block text-xs">
-              Created {format(new Date(order.created_at), 'PPp')}
+              Created {formatIST(order.created_at)}
             </span>
           </>
         }
@@ -57,8 +64,14 @@ export default async function OrderDetailPage({
               <CardContent className="space-y-2 text-sm">
                 <p><span className="text-muted-foreground">Order ID:</span> #{displayId}</p>
                 <p><span className="text-muted-foreground">Created by:</span> {order.creator_name ?? '—'}</p>
-                <p><span className="text-muted-foreground">Created at:</span> {format(new Date(order.created_at), 'PPp')}</p>
-                <p><span className="text-muted-foreground">Last updated:</span> {format(new Date(order.updated_at), 'PPp')}</p>
+                <p><span className="text-muted-foreground">Created at:</span> {formatIST(order.created_at)}</p>
+                <p><span className="text-muted-foreground">Last updated:</span> {formatIST(order.updated_at)}</p>
+                {order.notes && (
+                  <div className="pt-1">
+                    <p className="text-muted-foreground mb-0.5">Description:</p>
+                    <p className="rounded-md bg-muted/40 px-3 py-2 leading-relaxed">{order.notes}</p>
+                  </div>
+                )}
                 <OrderActions orderId={order.id} displayId={displayId} status={order.status} />
               </CardContent>
             </Card>
@@ -75,6 +88,12 @@ export default async function OrderDetailPage({
                     {formattedMobile}
                   </a>
                 </p>
+                {order.customer_address && (
+                  <div className="pt-1">
+                    <p className="text-muted-foreground mb-0.5">Address:</p>
+                    <p className="rounded-md bg-muted/40 px-3 py-2 leading-relaxed">{order.customer_address}</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>

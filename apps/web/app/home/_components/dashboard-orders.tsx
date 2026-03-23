@@ -253,9 +253,17 @@ export async function DashboardOrders() {
         </Card>
 
         <Card className="border-2 border-primary/10 bg-gradient-to-br from-background to-primary/5">
-          <CardHeader>
-            <CardTitle className="text-lg">Recent activity</CardTitle>
-            <CardDescription>Latest status updates</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="text-lg">Recent activity</CardTitle>
+              <CardDescription>Latest status updates</CardDescription>
+            </div>
+            <Link
+              href={pathsConfig.app.notifications}
+              className="text-primary text-sm font-medium hover:underline"
+            >
+              View all
+            </Link>
           </CardHeader>
           <CardContent>
             <ul className="space-y-4">
@@ -264,7 +272,7 @@ export async function DashboardOrders() {
                   No activity yet
                 </li>
               ) : (
-                stats.recentTimeline.map((event: Record<string, unknown>) => {
+                stats.recentTimeline.slice(0, 8).map((event: Record<string, unknown>) => {
                   const order = event.orders as { display_id?: string } | null;
                   const displayId =
                     order?.display_id ?? (event.order_id as string)?.slice(0, 8);
@@ -298,12 +306,6 @@ export async function DashboardOrders() {
                 })
               )}
             </ul>
-            <Link
-              href={pathsConfig.app.notifications}
-              className="text-primary mt-4 block text-sm font-medium hover:underline"
-            >
-              View all notifications
-            </Link>
           </CardContent>
         </Card>
       </div>

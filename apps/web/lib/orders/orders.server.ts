@@ -144,6 +144,16 @@ export async function getOrderById(orderId: string) {
     return null;
   }
 
+  let customerAddress: string | null = null;
+  if (order.customer_id) {
+    const { data: customer } = await supabase
+      .from('customers')
+      .select('address')
+      .eq('id', order.customer_id)
+      .single();
+    customerAddress = customer?.address ?? null;
+  }
+
   const { data: timeline } = await supabase
     .from('order_timeline')
     .select('*')
@@ -184,6 +194,7 @@ export async function getOrderById(orderId: string) {
   return {
     ...order,
     creator_name: creatorName,
+    customer_address: customerAddress,
     timeline: timelineWithNames,
   };
 }
